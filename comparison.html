@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithm Comparison | 8-Puzzle Solver</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .comparison-intro {
+            line-height: 1.7;
+            color: #4b5563;
+        }
+
+        .comparison-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 13px 15px;
+            border: 1px solid #e5e7eb;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .comparison-table th {
+            background: #eef2ff;
+            color: #3730a3;
+        }
+
+        .comparison-table tbody tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        .comparison-note {
+            margin-top: 16px;
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <h1>Search Algorithm Comparison</h1>
+        <p>Compare six algorithms for the 8-Puzzle problem</p>
+
+        <nav class="algorithm-nav">
+            <a href="index.html">GBFS Solver</a>
+            <a href="algorithms.html">Algorithm Information</a>
+            <a href="comparison.html">Compare Algorithms</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="panel">
+            <h2>Purpose</h2>
+            <p class="comparison-intro">
+                Search algorithms differ in the way they explore the state
+                space. This table summarizes their search strategies,
+                completeness, optimality, and typical resource requirements.
+                Actual execution results depend on the puzzle configuration,
+                successor ordering, and implementation.
+            </p>
+        </section>
+
+        <section class="panel">
+            <h2>Theoretical Comparison of Search Algorithms</h2>
+            <div class="comparison-table-wrapper">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Algorithm</th>
+                            <th>Search Strategy</th>
+                            <th>Heuristic</th>
+                            <th>Complete</th>
+                            <th>Optimal</th>
+                            <th>Memory Usage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Breadth-First Search</td>
+                            <td>Shallowest state first</td>
+                            <td>None</td>
+                            <td>Yes</td>
+                            <td>Yes*</td>
+                            <td>High</td>
+                        </tr>
+                        <tr>
+                            <td>Depth-First Search</td>
+                            <td>Deepest state first</td>
+                            <td>None</td>
+                            <td>Conditional</td>
+                            <td>No</td>
+                            <td>Low</td>
+                        </tr>
+                        <tr>
+                            <td>Iterative Deepening DFS (IDDLS)</td>
+                            <td>Repeated depth-limited DFS</td>
+                            <td>None</td>
+                            <td>Yes</td>
+                            <td>Yes*</td>
+                            <td>Low</td>
+                        </tr>
+                        <tr>
+                            <td>Depth-Limited Search</td>
+                            <td>DFS up to a depth limit</td>
+                            <td>None</td>
+                            <td>Conditional</td>
+                            <td>No</td>
+                            <td>Low</td>
+                        </tr>
+                        <tr>
+                            <td>Greedy Best-First Search</td>
+                            <td>Lowest h(n)</td>
+                            <td>Misplaced / Manhattan</td>
+                            <td>Yes*</td>
+                            <td>No</td>
+                            <td>Potentially high</td>
+                        </tr>
+                        <tr>
+                            <td>A* Search</td>
+                            <td>Lowest g(n) + h(n)</td>
+                            <td>Misplaced / Manhattan</td>
+                            <td>Yes*</td>
+                            <td>Yes*</td>
+                            <td>High</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="comparison-note">
+                *BFS is optimal for equal step costs. UCS and A* have
+                standard cost and heuristic assumptions. DFS and DLS
+                completeness depends on the search space and depth limit.
+                GBFS is complete on a finite graph when duplicate states
+                are handled correctly, but it is not generally optimal.
+                Memory labels are qualitative rather than measured values.
+            </p>
+        </section>
+        <section class="panel">
+            <h2>Experimental Comparison</h2>
+
+            <p class="comparison-intro">
+                Run all six search algorithms on the same initial and goal states.
+                The results below will be calculated from actual executions.
+            </p>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label for="compare-initial" class="form-label">
+                        Initial State
+                    </label>
+                    <input type="text" class="form-control" id="compare-initial" value="1 2 3 4 0 6 7 5 8"
+                        placeholder="Enter nine numbers from 0 to 8">
+                </div>
+
+                <div class="col-md-6">
+                    <label for="compare-goal" class="form-label">
+                        Goal State
+                    </label>
+                    <input type="text" class="form-control" id="compare-goal" value="1 2 3 4 5 6 7 8 0">
+                </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label for="compare-heuristic" class="form-label">
+                        Heuristic for GBFS and A*
+                    </label>
+                    <select id="compare-heuristic" class="form-select">
+                        <option value="manhattan">Manhattan Distance</option>
+                        <option value="misplaced">Misplaced Tiles</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="compare-depth-limit" class="form-label">
+                        Depth Limit for DLS
+                    </label>
+                    <input type="number" class="form-control" id="compare-depth-limit" value="30" min="0" max="100">
+                </div>
+            </div>
+
+            <button id="run-comparison-btn" class="btn btn-primary">
+                Run Comparison
+            </button>
+
+            <p id="comparison-status" class="mt-3" role="status">
+                Ready to compare algorithms.
+            </p>
+
+            <div class="comparison-table-wrapper">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Algorithm</th>
+                            <th>Solution Found</th>
+                            <th>Moves</th>
+                            <th>Nodes Generated</th>
+                            <th>Nodes Expanded</th>
+                            <th>Maximum Depth</th>
+                            <th>Time (ms)</th>
+                            <th>Approx. Memory (KB)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="comparison-results">
+                        <tr>
+                            <td colspan="8">
+                                Run the comparison to display measured results.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="comparison-note">
+                Results depend on the selected puzzle, successor ordering,
+                depth limit, and implementation. Memory usage is an estimate,
+                not an exact measurement of browser memory.
+            </p>
+        </section>
+
+        <section class="panel">
+            <h2>Performance Metrics to Compare</h2>
+            <p class="comparison-intro">
+                For a fair experimental comparison, run every algorithm on
+                the same initial and goal states and record these metrics:
+            </p>
+            <ul>
+                <li>Whether a solution was found</li>
+                <li>Number of moves in the returned solution</li>
+                <li>Nodes generated and nodes expanded</li>
+                <li>Maximum search depth</li>
+                <li>Execution time</li>
+                <li>Approximate memory usage</li>
+            </ul>
+            <p class="comparison-note">
+                These measurements should be populated by actual algorithm
+                implementations. This page currently presents theoretical
+                differences and does not claim to have run all six algorithms.
+            </p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Artificial Intelligence Digital Assignment · Algorithm Comparison</p>
+    </footer>
+    <script src="js/comparison.js"></script>
+</body>
+
+</html>

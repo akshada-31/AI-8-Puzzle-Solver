@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Algorithms | 8-Puzzle Solver</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .algorithm-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .algorithm-nav a {
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            background: #eef2ff;
+            color: #3730a3;
+            font-weight: 600;
+        }
+
+        .algorithm-info {
+            margin: 20px 0;
+            padding: 22px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: white;
+        }
+
+        .algorithm-info h2 {
+            margin-top: 0;
+            color: #3730a3;
+        }
+
+        .algorithm-info h3 {
+            margin-bottom: 6px;
+        }
+
+        .algorithm-info p,
+        .algorithm-info li {
+            line-height: 1.7;
+            color: #4b5563;
+        }
+
+        .complexity {
+            overflow-x: auto;
+        }
+
+        .complexity table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .complexity th,
+        .complexity td {
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        .complexity th {
+            background: #f3f4f6;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <h1>Search Algorithms</h1>
+        <p>Working principles, complexity, completeness and optimality</p>
+        <nav class="algorithm-nav">
+            <a href="index.html">GBFS Solver</a>
+            <a href="algorithms.html">Algorithm Information</a>
+            <a href="comparison.html">Compare Algorithms</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="panel">
+            <h2>Introduction</h2>
+            <p>
+                Search algorithms explore possible puzzle states to find a path
+                from an initial configuration to a goal configuration. Their
+                performance differs in terms of search strategy, memory usage,
+                completeness and solution optimality.
+            </p>
+        </section>
+
+        <section class="algorithm-info" id="bfs">
+            <h2>1. Breadth-First Search (BFS)</h2>
+            <p><strong>Principle:</strong> Explores states level by level, expanding the shallowest unvisited state
+                first.</p>
+            <h3>Working</h3>
+            <ol>
+                <li>Insert the initial state into a FIFO queue.</li>
+                <li>Remove the front state and test whether it is the goal.</li>
+                <li>Add its unvisited successors to the queue.</li>
+                <li>Repeat until the goal is found or the queue is empty.</li>
+            </ol>
+            <h3>Advantages</h3>
+            <ul>
+                <li>Complete for a finite branching factor.</li>
+                <li>Finds a shortest path when all moves have equal cost.</li>
+            </ul>
+            <h3>Limitations</h3>
+            <ul>
+                <li>Can consume substantial memory.</li>
+                <li>Explores many states that may not lead directly to the goal.</li>
+            </ul>
+            <p><strong>Completeness:</strong> Yes, under standard finite-branching assumptions.</p>
+            <p><strong>Optimality:</strong> Yes, for equal step costs.</p>
+            <p><strong>Time / Space:</strong> O(b<sup>d</sup>) / O(b<sup>d</sup>).</p>
+        </section>
+
+        <section class="algorithm-info" id="dfs">
+            <h2>2. Depth-First Search (DFS)</h2>
+            <p><strong>Principle:</strong> Explores one path deeply before backtracking.</p>
+            <h3>Working</h3>
+            <ol>
+                <li>Place the initial state on a stack.</li>
+                <li>Pop a state and check whether it is the goal.</li>
+                <li>Push unvisited successors onto the stack.</li>
+                <li>Continue until the goal is found or the stack is empty.</li>
+            </ol>
+            <h3>Advantages</h3>
+            <ul>
+                <li>Usually uses less memory than BFS.</li>
+                <li>May find a solution quickly if it explores a suitable path.</li>
+            </ul>
+            <h3>Limitations</h3>
+            <ul>
+                <li>May explore a long, unproductive path.</li>
+                <li>Does not guarantee the shortest solution.</li>
+            </ul>
+            <p><strong>Completeness:</strong> Not generally guaranteed in infinite-depth spaces; yes in finite graphs
+                with cycle detection.</p>
+            <p><strong>Optimality:</strong> No.</p>
+            <p><strong>Time:</strong> O(b<sup>m</sup>). <strong>Space:</strong> O(bm) for standard tree-search DFS.</p>
+        </section>
+
+        <section class="algorithm-info" id="iddls">
+            <h2>3. Iterative Deepening Depth-First Search (IDDLS)</h2>
+
+            <h3>Working Principle</h3>
+            <p>
+                Iterative Deepening Depth-First Search combines the space
+                efficiency of Depth-First Search with the completeness of
+                Breadth-First Search. It repeatedly performs Depth-Limited
+                Search, increasing the depth limit by one in each iteration
+                until the goal state is found.
+            </p>
+
+            <h3>How It Works</h3>
+            <ol>
+                <li>Start with a depth limit of 0.</li>
+                <li>Perform Depth-Limited Search from the initial state.</li>
+                <li>If the goal is not found, increase the depth limit by 1.</li>
+                <li>Repeat the search until the goal is found or the search is terminated.</li>
+            </ol>
+
+            <h3>Advantages</h3>
+            <ul>
+                <li>Complete when the branching factor is finite.</li>
+                <li>Optimal when all actions have equal cost.</li>
+                <li>Uses less memory than Breadth-First Search.</li>
+            </ul>
+
+            <h3>Limitations</h3>
+            <ul>
+                <li>Repeats the exploration of shallow states in each iteration.</li>
+                <li>May perform more work than BFS when the solution depth is small.</li>
+            </ul>
+
+            <h3>Complexity</h3>
+            <p><strong>Time Complexity:</strong> O(b<sup>d</sup>)</p>
+            <p><strong>Space Complexity:</strong> O(bd)</p>
+            <p><strong>Complete:</strong> Yes, for a finite branching factor.</p>
+            <p><strong>Optimal:</strong> Yes, when all actions have equal cost.</p>
+        </section>
+
+        <section class="algorithm-info" id="dls">
+            <h2>4. Depth-Limited Search (DLS)</h2>
+            <p><strong>Principle:</strong> DFS with a maximum search depth limit.</p>
+            <h3>Working</h3>
+            <ol>
+                <li>Start from the initial state.</li>
+                <li>Expand successors while the current depth is below the limit.</li>
+                <li>Backtrack when the limit is reached without finding the goal.</li>
+            </ol>
+            <h3>Advantages</h3>
+            <ul>
+                <li>Prevents search from continuing indefinitely down a path.</li>
+                <li>Uses relatively little memory.</li>
+            </ul>
+            <h3>Limitations</h3>
+            <ul>
+                <li>Fails to find solutions deeper than the selected limit.</li>
+                <li>A poor limit may waste effort or miss a solution.</li>
+            </ul>
+            <p><strong>Completeness:</strong> Only when the limit reaches a solution depth and relevant branches are
+                explored.</p>
+            <p><strong>Optimality:</strong> No, in general.</p>
+            <p><strong>Time / Space:</strong> O(b<sup>l</sup>) / O(bl), where l is the depth limit.</p>
+        </section>
+
+        <section class="algorithm-info" id="gbfs">
+            <h2>5. Greedy Best-First Search (GBFS)</h2>
+            <p><strong>Principle:</strong> Expands the state that appears closest to the goal using the heuristic h(n).
+            </p>
+            <h3>Working</h3>
+            <ol>
+                <li>Insert the initial state into a priority queue.</li>
+                <li>Prioritize states with the lowest heuristic value.</li>
+                <li>Expand the best-ranked state and insert its unvisited successors.</li>
+                <li>Repeat until the goal is found or the frontier is empty.</li>
+            </ol>
+            <h3>Heuristics</h3>
+            <ul>
+                <li><strong>Misplaced Tiles:</strong> Counts numbered tiles outside their goal positions.</li>
+                <li><strong>Manhattan Distance:</strong> Sums each numbered tile's horizontal and vertical distance from
+                    its goal position.</li>
+            </ul>
+            <h3>Advantages</h3>
+            <ul>
+                <li>Heuristics can guide the search toward promising states.</li>
+                <li>May explore fewer states than uninformed methods on some puzzles.</li>
+            </ul>
+            <h3>Limitations</h3>
+            <ul>
+                <li>May return a non-shortest solution.</li>
+                <li>A heuristic can be misleading and does not account for accumulated path cost.</li>
+            </ul>
+            <p><strong>Completeness:</strong> Yes on a finite graph with duplicate detection and a correctly implemented
+                search.</p>
+            <p><strong>Optimality:</strong> No, in general.</p>
+            <p><strong>Priority:</strong> f(n) = h(n), with g(n) tracked separately as path depth/cost.</p>
+            <p><strong>Time / Space:</strong> O(b<sup>m</sup>) in the worst case.</p>
+        </section>
+
+        <section class="algorithm-info" id="astar">
+            <h2>6. A* Search</h2>
+            <p><strong>Principle:</strong> Expands the state with the smallest estimated total solution cost.</p>
+            <h3>Working</h3>
+            <ol>
+                <li>Start with the initial state and g(n) = 0.</li>
+                <li>Calculate f(n) = g(n) + h(n).</li>
+                <li>Expand the state with the lowest f(n).</li>
+                <li>Update successor path costs and priorities when a better path is found.</li>
+            </ol>
+            <h3>Advantages</h3>
+            <ul>
+                <li>Can find optimal solutions with a suitable admissible heuristic and correct implementation.</li>
+                <li>Uses both path cost and estimated remaining cost.</li>
+            </ul>
+            <h3>Limitations</h3>
+            <ul>
+                <li>Can require large amounts of memory.</li>
+                <li>Performance depends on the quality of the heuristic.</li>
+            </ul>
+            <p><strong>Completeness:</strong> Yes under standard positive-cost and finite-branching assumptions.</p>
+            <p><strong>Optimality:</strong> Yes with an admissible heuristic in tree search; graph search needs suitable
+                consistency or reopening behavior.</p>
+            <p><strong>Priority:</strong> f(n) = g(n) + h(n).</p>
+            <p><strong>Time / Space:</strong> Exponential in the worst case.</p>
+        </section>
+
+        <section class="panel complexity">
+            <h2>Quick Comparison</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Algorithm</th>
+                        <th>Strategy</th>
+                        <th>Complete?</th>
+                        <th>Optimal?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>BFS</td>
+                        <td>Shallowest first</td>
+                        <td>Yes</td>
+                        <td>Yes, equal costs</td>
+                    </tr>
+                    <tr>
+                        <td>DFS</td>
+                        <td>Deepest first</td>
+                        <td>Conditional</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td>IDDLS</td>
+                        <td>Repeated depth-limited DFS</td>
+                        <td>Yes, finite branching</td>
+                        <td>Yes, equal costs</td>
+                    </tr>
+                    <tr>
+                        <td>DLS</td>
+                        <td>DFS with depth limit</td>
+                        <td>Conditional</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td>GBFS</td>
+                        <td>Lowest h(n)</td>
+                        <td>Yes on finite graphs with duplicate detection</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td>A*</td>
+                        <td>Lowest g(n) + h(n)</td>
+                        <td>Under standard conditions</td>
+                        <td>Yes, with suitable heuristic</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Artificial Intelligence Digital Assignment · Search Algorithms</p>
+    </footer>
+</body>
+
+</html>
